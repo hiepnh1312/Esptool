@@ -79,10 +79,9 @@ const FileList = (props) => {
 
                 {/* File Name */}
                 <Grid item xs={4}>
-                    <FormControl fullWidth>
+                    <FormControl fullWidth size="small">
                         <InputLabel id="file-select-label">File</InputLabel>
                         <Select
-                            size="small"
                             labelId="file-select-label"
                             label="File"
                             value={props.uploads}
