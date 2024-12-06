@@ -22,10 +22,10 @@ const FileList = (props) => {
             const response = await axios.get(
                 version.github,
                 {
-                    headers: {
-                        Accept: "application/vnd.github.v3+json",
-                        Authorization: `Bearer ${version.auth}`
-                    },
+                    // headers: {
+                    //     Accept: "application/vnd.github.v3+json",
+                    //     Authorization: `Bearer ${version.auth}`
+                    // },
                 }
             );
 

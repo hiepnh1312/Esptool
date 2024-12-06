@@ -19,7 +19,7 @@ import Footer from './components/Footer'
 import { connectESP, formatMacAddr, sleep, loadFiles, supported } from './lib/esp'
 import { loadSettings, defaultSettings } from './lib/settings'
 import axios from "axios";
-import version from "./version";
+// import version from "./version";
 
 const App = () => {
   const [connected, setConnected] = React.useState(true) // Connection status
@@ -42,10 +42,10 @@ const App = () => {
   async function downloadGithubFile(url) {
     try {
       console.log(url)
-      const response = await axios.get( url, {
-        headers: {
-          Authorization: `Bearer ${version.auth}`, // Token GitHub
-        },
+      const response = await axios.get( `${url}`, {
+        // headers: {
+        //   Authorization: `Bearer ${version.auth}`, // Token GitHub
+        // },
         responseType: 'blob', // Trả về Blob để tải file
       });
       const filename = url.split('/').pop();
@@ -199,10 +199,10 @@ const App = () => {
     }
 
 
-    toast(`Uploading ${file.fileName.substring(0, 28)}...`, { position: 'top-center', progress: 0, toastId: 'upload' })
+    toast(`Uploading ${file.name.substring(0, 28)}...`, { position: 'top-center', progress: 0, toastId: 'upload' })
 
     try {
-      const contents = await toArrayBuffer(file.obj)
+      const contents = await toArrayBuffer(file)
 
       await espStub.flashData(
           contents,
