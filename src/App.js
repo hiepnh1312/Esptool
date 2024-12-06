@@ -22,7 +22,7 @@ import axios from "axios";
 // import version from "./version";
 
 const App = () => {
-  const [connected, setConnected] = React.useState(true) // Connection status
+  const [connected, setConnected] = React.useState(false) // Connection status
   const [connecting, setConnecting] = React.useState(false)
   const [output, setOutput] = React.useState({ time: new Date(), value: 'Click Connect to start\n' }) // Serial output
   const [espStub, setEspStub] = React.useState(undefined) // ESP flasher stuff
