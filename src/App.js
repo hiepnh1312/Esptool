@@ -18,7 +18,8 @@ import Footer from './components/Footer'
 
 import { connectESP, formatMacAddr, sleep, loadFiles, supported } from './lib/esp'
 import { loadSettings, defaultSettings } from './lib/settings'
-// import GithubFileSelector from "./components/FileListTest";
+import axios from "axios";
+import version from "./version";
 
 const App = () => {
   const [connected, setConnected] = React.useState(true) // Connection status
@@ -37,6 +38,25 @@ const App = () => {
     setSettings(loadSettings());
     console.log(chipName)
   }, [])
+
+  async function downloadGithubFile(url) {
+    try {
+      console.log(url)
+      const response = await axios.get( url, {
+        headers: {
+          Authorization: `Bearer ${version.auth}`, // Token GitHub
+        },
+        responseType: 'blob', // Trả về Blob để tải file
+      });
+      const filename = url.split('/').pop();
+      return new File([response.data], filename, {
+        type: response.headers['content-type'], // Dùng loại MIME từ server
+      });
+    } catch (error) {
+      console.error('Error downloading file:', error);
+      return null; // Trả về null nếu tải thất bại
+    }
+  }
 
   // Add new message to output
   const addOutput = (msg) => {
@@ -63,10 +83,10 @@ const App = () => {
     })
 
     try {
-      toast.info('Connecting...', { 
-        position: 'top-center', 
-        autoClose: false, 
-        toastId: 'connecting' 
+      toast.info('Connecting...', {
+        position: 'top-center',
+        autoClose: false,
+        toastId: 'connecting'
       })
       toast.update('connecting', {
         render: 'Connecting...',
@@ -171,8 +191,13 @@ const App = () => {
       })
     }
 
-    const file = uploads;
-    success = true
+    const file = await downloadGithubFile(uploads);
+    if (file) {
+      console.log(file)
+      success = true;
+      setFlashing(false);
+    }
+
 
     toast(`Uploading ${file.fileName.substring(0, 28)}...`, { position: 'top-center', progress: 0, toastId: 'upload' })
 
@@ -257,7 +282,7 @@ const App = () => {
             <Buttons
               erase={() => setConfirmErase(true)}
               program={() => setConfirmProgram(true)}
-              disabled={flashing}
+              disabled={flashing || !uploads?.length}
             />
           </Grid>
         }

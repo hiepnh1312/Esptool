@@ -12,6 +12,7 @@ import {MenuItem, Select} from "@mui/material";
 import axios from "axios";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
+import version from "../version";
 
 const FileList = (props) => {
     const [files, setFiles] = useState([]); // Lưu danh sách file
@@ -19,11 +20,11 @@ const FileList = (props) => {
     const fetchFiles = async () => {
         try {
             const response = await axios.get(
-                "https://api.github.com/repos/hiepnh1312/Esptool/contents/",
+                version.github,
                 {
                     headers: {
                         Accept: "application/vnd.github.v3+json",
-                        Authorization: 'Bearer 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'
+                        Authorization: `Bearer ${version.auth}`
                     },
                 }
             );
@@ -48,17 +49,6 @@ const FileList = (props) => {
     const uploadFile = (e) => {
         props.setUploads(e)
     }
-
-    // const setOffset = (index, newOffset) => {
-    //     const newUploads = [...props.uploads]
-    //     newUploads[index] = {
-    //         ...props.uploads[index],
-    //         offset: newOffset
-    //     }
-    //
-    //     saveFiles(newUploads)
-    //     props.setUploads(newUploads)
-    // }
     const onlyHex = (e) => {
         const re = /[0-9a-fA-F]+/g
         if (!re.test(e.key)) e.preventDefault()
@@ -103,7 +93,7 @@ const FileList = (props) => {
 }
 
 FileList.propTypes = {
-    uploads: PropTypes.array,
+    uploads: PropTypes.string,
     setUploads: PropTypes.func,
     chipName: PropTypes.string,
 }
