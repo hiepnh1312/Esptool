@@ -19,10 +19,11 @@ const FileList = (props) => {
     const fetchFiles = async () => {
         try {
             const response = await axios.get(
-                "https://api.github.com/repos/facebook/react/contents/",
+                "https://api.github.com/repos/hiepnh1312/Esptool/contents/",
                 {
                     headers: {
                         Accept: "application/vnd.github.v3+json",
+                        Authorization: 'Bearer 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'
                     },
                 }
             );
